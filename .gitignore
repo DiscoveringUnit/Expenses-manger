@@ -1,0 +1,21 @@
+# Virtual environment
+.venv/
+
+# Private planning notes (not for public repo)
+docs/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Local database (never commit real financial data)
+*.db
+*.sqlite
+*.sqlite3
+
+# Secrets / local config (API keys, etc.)
+.env
+
+# OS/editor cruft
+.DS_Store
+Thumbs.db
