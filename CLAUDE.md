@@ -17,7 +17,61 @@ The user is a junior developer building this app largely to learn — they have 
 
 Track Python concepts/patterns already explained to the user here, so future sessions calibrate what's new vs. review instead of re-explaining or over-explaining. Update this list as new concepts come up.
 
-- (none yet — add entries as they're introduced, e.g. "list comprehensions", "context managers / `with`", "dataclasses")
+- Virtual environments, pip, `requirements.txt` — already knew this coming in
+- pandas basics (`read_csv`, column assignment, boolean filtering) — already
+  knew this coming in; deliberately not used in v1 (see `docs/PROJECT_IDEA.md`)
+- git fundamentals: `init`/`add`/`commit`/`push`, remotes, staging vs
+  committing, branch rename (`-M`), `--set-upstream` (`-u`), `.gitignore`,
+  untracking a file without deleting it (`rm --cached`)
+- SQL fundamentals: `CREATE TABLE`, column types and SQLite's type affinity
+  (no real `DATE` type — store as ISO-8601 `TEXT`), `PRIMARY KEY`,
+  `NOT NULL`, `INSERT INTO ... VALUES`, `IF NOT EXISTS` idempotency,
+  `OperationalError` (bad SQL) vs `IntegrityError` (valid SQL, broken
+  constraint)
+- Money handling: never `float` for currency — `Decimal` in Python code,
+  integer cents in storage
+- Python fundamentals: defining a function vs. calling it, capturing a
+  return value in a variable, `os.makedirs(path, exist_ok=True)`, top-level
+  code executing sequentially at import/run time vs. code inside a function
+  body only running when called
+- SQLite files are binary, not human-readable text — use a real tool (DB
+  Browser for SQLite, or a VS Code SQLite extension) to inspect them, not a
+  plain text editor
+
+- Parameterized queries (`?` placeholders + values tuple) — including the
+  danger of getting positional order wrong (values silently land in the
+  wrong column, or a `WHERE` matches the wrong/no rows — not a crash)
+- `decimal.Decimal` in practice: constructing from a string (never from a
+  `float`), `amount * 100` behaving differently for `Decimal`/`float`
+  (arithmetic) vs. `str` (repetition — a real bug the user hit and fixed)
+- SQL `WHERE`, `UPDATE ... SET ... WHERE`, `DELETE ... WHERE` — including
+  that forgetting `WHERE` affects every row, and that injection via
+  reshaping a `WHERE` condition (e.g. `' OR '1'='1`) is a real risk even
+  without stacking a second statement
+- Full CRUD (`add_expense`, `get_expenses`, `update_expense`,
+  `delete_expense`) built and debugged end-to-end in `db.py`
+
+Not yet covered (will need full explanation when introduced):
+- Flet (any of it)
+
+## Working style notes for this project specifically
+
+- User writes all code themselves in `db.py`/app files; do not use Edit/Write
+  on those files — read them to review, explain fixes in words or minimal
+  code snippets, let the user apply them. (Boilerplate config files like
+  `.gitignore`, `docs/PROJECT_IDEA.md` are fine for the assistant to edit
+  directly — this restriction is about the user's own learning code.)
+- Do not run demo scripts via the shell/terminal tool and explain the
+  output — this doesn't work for this user as a teaching method (see
+  memory: feedback_demo_style). Explain concepts in prose/code blocks only;
+  if something needs verifying, ask the user to run it and report back.
+- User debugs iteratively well: point out one issue (or a few tightly
+  related ones) at a time, let them fix and repaste, rather than dumping
+  every possible issue in the file at once when they're mid-attempt.
+- Workflow gotcha to remember: DB Browser for SQLite locks `data/expenses.db`
+  while open, which can make `db.py` writes (INSERT/UPDATE/DELETE) silently
+  fail to apply or error. Close DB Browser before running the script, reopen
+  after to inspect results.
 
 ## Try-first rule
 
