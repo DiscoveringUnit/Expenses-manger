@@ -16,6 +16,9 @@ __pycache__/
 # Secrets / local config (API keys, etc.)
 .env
 
+# Personal/local Claude Code settings (machine-specific, not shared)
+.claude/settings.local.json
+
 # OS/editor cruft
 .DS_Store
 Thumbs.db
